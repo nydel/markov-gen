@@ -24,24 +24,40 @@ use markov probability mathematics to generate strings of language
 
 
    here is a sample piece of freeform this package wrote from poe's work:
+   
 
 
 
    in her sleep, as angels all
+
    take, from out the chamber door,
+   
    the fervour with which did she
+   
    pine, forgotten now in her boundless
+   
    floods and cushioned seats, by
+   
    such bright green eyes driven, she
+   
    prays to look not her dark thoughts
+   
    in the eyes, in her fountain, as
+   
    winged roses all flutter back to
+   
    roam thy perfect fog, thy bliss,
+   
    gracefully, she dies, to travel
+   
    now only within a memory of some
+   
    silent dell upon where, once, a
+   
    shared slumber bound her dreams
+   
    tightly to the mastery of another.
+   
 
 
 
