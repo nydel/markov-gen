@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>markov-gen by nydel</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>markov-gen</h1>
+        <p>use markov probability mathematics to generate strings of language</p>
+
+        <p class="view"><a href="https://github.com/nydel/markov-gen">View the Project on GitHub <small>nydel/markov-gen</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/nydel/markov-gen/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/nydel/markov-gen/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/nydel/markov-gen">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="markov-gen" class="anchor" href="#markov-gen" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>markov-gen</h1>
+
+<p>use markov probability mathematics to generate strings of language</p>
+
+<h1>
+<a id="-markov-gen-version-10101-alpha-a-packaged-system-for-commonlisp" class="anchor" href="#-markov-gen-version-10101-alpha-a-packaged-system-for-commonlisp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>| :MARKOV-GEN version 1.0.101 Alpha. a packaged system for commonlisp.</h1>
+
+<pre><code>written by joshua ryan "nydel" trout on 2016-04-03 under LLGPL for fair use
+
+contact the author via email: nydel@36bit.com
+use subject: markov-gen.lisp
+</code></pre>
+
+<p>to test the system, load markov-gen.lisp then do:</p>
+
+<p>(mg:+use-poe+) ;; this will load up and create markov data from edgar allan poe</p>
+
+<p>(mg:+gen-text+ "the" (+ 5 (random 5))) ;; generate a 5-10 word line of poetry</p>
+
+<p>this is a simple package that will take language input in the form of a string
+   then separate the string into words determining their locations by positions of
+   a #\Space or other whitespace, then analyze the string as to create a markov chain
+   raw data association list, which can then be used to generate new language strings,
+   using the natural weight (probability) occuring by selecting a random value in a
+   list of words that occur in position n+1 in accordance with the position of the
+   word in position n ... so if the word "person" occurs twice after the word "a" and
+   the word "banana" occurs once after the word "a" then it is always 66% likely that
+   the selection of a next word for current word "a" will result in "person" and 33%
+   likely that it will result in "banana" because "person" has twice the weight of
+   the word "banana" ... that is a simple example, and this package is equipped with
+   a design capable of handling incredibly large strings and extremely complex markov
+   data without compromising the purity of markov probability maths through something
+   like the common practice of reducing probability samples to non-imaginary numbers
+   usually representative of percentage and capped for accuracy at the nearest 0.01
+   i.e. the nearest hundredth.</p>
+
+<p>to use this you'll need quicklisp to load :CL-PPCRE, i can't imagine that you don't
+   already have ql installed but if you don't then find it for free at quicklisp dot
+   org probably or maybe grab it off one of its many git repositories. all it does is
+   allow me to write this package sloppily into one file instead of the old ways which
+   were required to load dependencies packaged as asd/asdf etc.</p>
+
+<p>get yourself a bunch of text, such as a chapter of a book you like or all the song
+   lyrics from some band's album. make sure the string is free of escape characters,
+   especially #. (period) and #\, (comma) and #! (exclaimation point) ... it is most
+   likely okay to leave in #\' (apostrophe) but why would you? once you have made the
+   string, run</p>
+
+<p>(markov-gen:+eval-raw+ string)  ;; replacing "string" with either the string or a
+   symbol pointing to it. this will be create the markov association list and it will
+   be stored globally as markov-gen::<em>markov-raw-data</em></p>
+
+<p>once you have processed the data, you can generate new text:</p>
+
+<p>(markov-gen:+gen-text+ first-word desired-length)</p>
+
+<p>example of that:</p>
+
+<p>(markov-gen:+gen-text+ "the" 250) ;; this will use your data to generate a string
+   of 250 words, unless it runs into a word that has no possible next words; so, of
+   course, it is best to use as lengthy of a string as possible for analysis, as this
+   will reduce the chance of running into an early end, especially when trying to
+   generate a very large amount of language, e.g. thousands of words.</p>
+
+<p>so after interpretation, to test, you could use this string: actually,
+   i went ahead and stored what i wrote in markov-gen::<em>test-string</em></p>
+
+<p>to test using it do (markov-gen:+eval-raw+ markov-gen::<em>test-string</em>)
+               then do (markov-gen:+gen-text+ "this" 100)</p>
+
+<p>|#</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/nydel">nydel</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
