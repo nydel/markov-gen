@@ -1,5 +1,4 @@
-(ql:quickload '(:bordeaux-threads
-		:cl-ppcre))
+(ql:quickload '(:cl-ppcre))
 
 (defpackage :markov-gen
   (:nicknames :markov :mkgn :mg)
