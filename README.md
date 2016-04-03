@@ -15,7 +15,7 @@ use markov probability mathematics to generate strings of language
 
    (mg:+use-poe+) ;; this will load up and create markov data from edgar allan poe
    
-   (mg:+gen-text "the" (+ 5 (random 5))) ;; generate a 5-10 word line of poetry
+   (mg:+gen-text+ "the" (+ 5 (random 5))) ;; generate a 5-10 word line of poetry
 
 
 
