@@ -8,6 +8,15 @@ use markov probability mathematics to generate strings of language
     use subject: markov-gen.lisp
 
 
+
+   to test the system, load markov-gen.lisp then do:
+
+   (mg:+use-poe+) ;; this will load up and create markov data from edgar allan poe
+   (mg:+gen-text "the" (+ 5 (random 5))) ;; generate a 5-10 word line of poetry
+
+
+
+
    this is a simple package that will take language input in the form of a string
    then separate the string into words determining their locations by positions of
    a #\Space or other whitespace, then analyze the string as to create a markov chain
