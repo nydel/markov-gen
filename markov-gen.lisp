@@ -8,7 +8,8 @@
 	   :markov-gen-version
 	   :version
 	   :+eval-raw+
-	   :+gen-text+))
+	   :+gen-text+
+	   :+use-poe+))
 
 #| :MARKOV-GEN version 1.0.101 Alpha. a packaged system for commonlisp.
     written by joshua ryan "nydel" trout on 2016-04-03 under LLGPL for fair use
@@ -113,6 +114,9 @@
     (loop for word in words collect (list word (collect-all-next-words word string-list)))))
 
 
+(defun raw-data-from-string-list (str-list)
+  (loop for word in str-list collect (list word (collect-all-next-words word str-list))))
+
 ;;; what follows is the exported evaluation function:
 
 
@@ -154,3 +158,50 @@
 (defun +gen-text+ (first-word length-of-generation-in-words)
   "call this to generate text after the analysis phase"
   (generate-text first-word length-of-generation-in-words))
+
+
+;;; some additional features:
+
+(defun produce-small-poem ()
+  (let* ((first-word (progn
+		       (format t "what should be the first word? >> ")
+		       (read-line)))
+	 (pitch (+gen-text+ first-word (+ 5 (random 5)))))
+    (let ((accepted-p (progn
+			(format t "~&~a~&~%...is the first line. is this okay?" pitch)
+
+					;(subseq pitch 1 (- (length pitch) 2)))
+				;; this is meant to deal with that the results are a list of strings rather than one string ... will have to take something like ("hello" "there" "you" "sloppy" "lisp" "hacker") and turn it into "hello there you sloppy lisp hacker" via a function -- i hope -- it kind of feels like i might have to write that as a macro..
+				
+			(print "yes or no (y/n)")(read))))
+      (if (string-equal accepted-p "y")
+	  (progn
+	    (format t "~&you accepted the line!~&")
+	    (format t "~&add another line? yes or no (y/n)")
+	    (let ((another-p (read)))
+	      (if (string-equal another-p "y")
+		  (produce-small-poem)
+		  (format t "~&okay, finished with poem!~&"))))
+	  (progn
+	    (format t "~&you rejected the line.~&")
+	    (format t "~&craft another potential line? yes or no (y/n)")
+	    (let ((another-p (read)))
+	      (if (string-equal another-p "y")
+		  (produce-small-poem)
+		  (format t "~&okay, finished with poem!~&"))))))))
+
+;; at the moment, the produce-small-poem function doesn't actually push the accepted lines anywhere -- we're going to add that functionality as soon as we finish including the edgar allan poe string with a function that loads it up.
+
+
+(defun symbol-list-to-string-list (list)
+  (mapcar (lambda (y) (string-downcase (string y))) list))
+
+(defun load-up-poe-string ()
+  (with-open-file (poe #P"./sample-text.edgar-allan-poe.txt"
+		       :direction :input)
+    (loop for line = (read poe nil 'eof) until (equal line 'eof) collect line)))
+
+(defun +use-poe+ ()
+  (format *standard-output* "~&loading some edgar allan poe from a file then processing it into raw markov data; this may take a while, it takes about 10-15 seconds on my solid state drive with 24gb ra memory & a couple cpu clocking around 2.4ghz ... it's already happening, this message is to tell you that :MARKOV-GEN did not hang when you called (mg:+use-poe+) ... please wait...")
+  (setf *markov-raw-data* (raw-data-from-string-list (symbol-list-to-string-list (load-up-poe-string))))
+  (format *standard-output* "~&loaded sample-text.edgar-allan-poe.txt & made raw markov data.~&do (markov-gen:+gen-text+ \"the\" 100) to create a 100 word string beginning with the word 'the'~&~%or if you want to use it the way i do, generate poems line-by-line, using (+ 5 (random 5)) as the length-of-string-in-words variable, then keep the good lines and base the first word of the next line on something from the previous.~%"))
